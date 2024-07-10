@@ -11,6 +11,11 @@ A web app for practicing SQL with NBA data. Fetches data from the balldontlie AP
 
 ## Screenshots and Descriptions
 
+### Data Tables
+
+![Data Tables](images/tables.png)
+*Displays data retrieved from the balldontlie API, including tables for players, teams, games, and stats.*
+
 ### SQL Syntax Examples Dropdown
 
 ![SQL Syntax Examples Dropdown](images/dropdown.png)
@@ -30,11 +35,6 @@ A web app for practicing SQL with NBA data. Fetches data from the balldontlie AP
 
 ![LLM Explanation of SQL Queries](images/llm_help2.png)
 *The app can also explain SQL queries in natural language, helping users understand what each query does.*
-
-### Data Tables
-
-![Data Tables](images/tables.png)
-*Displays data retrieved from the balldontlie API, including tables for players, teams, games, and stats.*
 
 ## Setup and Installation
 
