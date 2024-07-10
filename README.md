@@ -1,32 +1,40 @@
 # NBA Data Query Playground
 
-This project is a web application designed to help users practice and learn SQL by querying NBA data stored in a SQLite database. The data is retrieved from the [balldontlie API](https://www.balldontlie.io/) and includes information on teams, players, games, and player stats. The project also aims to provide experience with pulling data from APIs.
-
-## Purpose and Objectives
-
-The main objectives of this project are:
-
-- **SQL Practice**: Provide an interactive platform where users can practice and learn SQL.
-- **Data Retrieval**: Gain experience in pulling data from APIs and managing it in a database.
-- **User Interaction**: Create a user-friendly web interface for querying data.
-- **Natural Language Processing**: Enable users to convert natural language queries into SQL.
+A web app for practicing SQL with NBA data. Fetches data from the balldontlie API and stores it in SQLite. Users can query the data via a web interface and convert natural language to SQL using OpenAI.
 
 ## Features
 
-- Fetch and store NBA data (teams, players, games, stats) from the balldontlie API.
-- Store the data in a SQLite database.
-- Web interface to query the data using SQL.
-- Natural language to SQL query suggestions using OpenAI.
+- **Fetch and store NBA data**: Retrieves data on teams, players, games, and player stats from the balldontlie API and stores it in a SQLite database.
+- **SQL Query Interface**: Allows users to execute SQL queries against the database via a user-friendly web interface.
+- **SQL Syntax Examples**: Provides examples of common SQL queries for users to learn and practice.
+- **Natural Language to SQL**: Converts natural language queries to SQL using OpenAI, helping users understand SQL query construction.
 
-## Technologies Used
+## Screenshots and Descriptions
 
-- Python
-- Flask
-- SQLite
-- Pandas
-- Requests
-- OpenAI
-- HTML/CSS
+### SQL Syntax Examples Dropdown
+
+![SQL Syntax Examples Dropdown](images/dropdown.png)
+*The dropdown menu allows users to select from various SQL syntax examples to help them learn and construct queries.*
+
+### Query Execution
+
+![Query Execution](images/execution.png)
+*Users can type their SQL queries in the input box and see the results displayed below after clicking "Execute".*
+
+### LLM Help - Natural Language to SQL
+
+![LLM Help - Natural Language to SQL](images/llm_Help.png)
+*Users can input natural language queries, and the app will suggest corresponding SQL queries using OpenAI.*
+
+### LLM Explanation of SQL Queries
+
+![LLM Explanation of SQL Queries](images/llm_help2.png)
+*The app can also explain SQL queries in natural language, helping users understand what each query does.*
+
+### Data Tables
+
+![Data Tables](images/tables.png)
+*Displays data retrieved from the balldontlie API, including tables for players, teams, games, and stats.*
 
 ## Setup and Installation
 
@@ -44,7 +52,7 @@ The main objectives of this project are:
 1. **Clone the repository**:
 
     ```sh
-    git clone https://github.com/yourusername/nba-data-query-playground.git
+    git clone https://github.com/Usamah1997/nba-data-query-playground.git
     cd nba-data-query-playground
     ```
 
@@ -84,7 +92,7 @@ The main objectives of this project are:
 2. **Run the Flask Application**:
 
     ```sh
-    python app.py
+    flask run
     ```
 
 3. **Open your web browser** and go to `http://127.0.0.1:5000/` to use the application.
@@ -116,3 +124,11 @@ The main objectives of this project are:
     ```sql
     SELECT first_name, last_name, weight_pounds FROM players WHERE team_id = 1;
     ```
+
+### Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+
+### License
+
+This project is licensed under the MIT License.
