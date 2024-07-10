@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Playground</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Query Playground</h1>
+        
+        <div class="tables">
+            <div class="table-section">
+                <h2>Players Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in players.columns %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in players.rows %}
+                            <tr>
+                                {% for col in row %}
+                                    <td>{{ col }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-section">
+                <h2>Teams Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in teams.columns %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in teams.rows %}
+                            <tr>
+                                {% for col in row %}
+                                    <td>{{ col }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-section">
+                <h2>Games Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in games.columns %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in games.rows %}
+                            <tr>
+                                {% for col in row %}
+                                    <td>{{ col }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-section">
+                <h2>Stats Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in stats.columns %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in stats.rows %}
+                            <tr>
+                                {% for col in row %}
+                                    <td>{{ col }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="query-sections">
+            <div class="section">
+                <h3>Chat with LLM, discuss what you want to do</h3>
+                <form action="/query" method="POST">
+                    <textarea name="natural_language" rows="5" placeholder="Describe what you want to do..."></textarea>
+                    <button type="submit" name="suggest" value="true">Suggest Query</button>
+                </form>
+                {% if suggested_query %}
+                    <div class="suggested-query">
+                        <h4>Suggested Query:</h4>
+                        <pre>{{ suggested_query }}</pre>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="section">
+                <h3>Type your query here</h3>
+                <div class="dropdown-section">
+                    <select id="syntax-dropdown">
+                        <option value="" disabled selected>Select SQL syntax example</option>
+                        <option value="-- SELECT<br>SELECT first_name, last_name FROM players;">SELECT -> Basic select query</option>
+                        <option value="-- FROM<br>SELECT full_name, city FROM teams;">FROM -> Select columns from teams</option>
+                        <option value="-- WHERE<br>SELECT first_name, last_name FROM players WHERE position = 'G';">WHERE -> Filter players with position 'G'</option>
+                        <option value="-- INSERT INTO<br>INSERT INTO teams (id, abbreviation, city) VALUES (31, 'XYZ', 'New City');">INSERT INTO -> Insert new team record</option>
+                        <option value="-- UPDATE<br>UPDATE players SET height_feet = 7 WHERE id = 1;">UPDATE -> Update player's height</option>
+                        <option value="-- DELETE<br>DELETE FROM games WHERE id = 1;">DELETE -> Delete game with id 1</option>
+                        <option value="-- JOIN<br>SELECT p.first_name, p.last_name, t.name FROM players p JOIN teams t ON p.team_id = t.id;">JOIN -> Combine players with their teams</option>
+                        <option value="-- INNER JOIN<br>SELECT p.first_name, p.last_name, g.date FROM players p INNER JOIN stats s ON p.id = s.player_id INNER JOIN games g ON s.game_id = g.id;">INNER JOIN -> Player stats with game dates</option>
+                        <option value="-- LEFT JOIN<br>SELECT t.name, p.first_name FROM teams t LEFT JOIN players p ON t.id = p.team_id;">LEFT JOIN -> All teams with their players</option>
+                        <option value="-- RIGHT JOIN<br>SELECT g.date, s.pts FROM games g RIGHT JOIN stats s ON g.id = s.game_id;">RIGHT JOIN -> Game dates with stats</option>
+                        <option value="-- FULL JOIN<br>SELECT p.first_name, t.name FROM players p FULL JOIN teams t ON p.team_id = t.id;">FULL JOIN -> Players with teams</option>
+                        <option value="-- GROUP BY<br>SELECT position, COUNT(*) FROM players GROUP BY position;">GROUP BY -> Count players by position</option>
+                        <option value="-- ORDER BY<br>SELECT first_name, last_name FROM players ORDER BY height_feet DESC;">ORDER BY -> Sort players by height</option>
+                        <option value="-- HAVING<br>SELECT team_id, AVG(weight_pounds) FROM players GROUP BY team_id HAVING AVG(weight_pounds) > 200;">HAVING -> Teams with average player weight over 200 pounds</option>
+                        <option value="-- DISTINCT<br>SELECT DISTINCT city FROM teams;">DISTINCT -> Select distinct cities</option>
+                        <option value="-- LIMIT<br>SELECT first_name, last_name FROM players LIMIT 5;">LIMIT -> Limit number of players returned</option>
+                        <option value="-- OFFSET<br>SELECT first_name, last_name FROM players LIMIT 5 OFFSET 5;">OFFSET -> Skip first 5 players</option>
+                        <option value="-- AS<br>SELECT first_name AS name FROM players;">AS -> Rename column</option>
+                        <option value="-- BETWEEN<br>SELECT first_name, last_name FROM players WHERE height_feet BETWEEN 6 AND 7;">BETWEEN -> Filter by height range</option>
+                        <option value="-- IN<br>SELECT first_name, last_name FROM players WHERE team_id IN (1, 2, 3);">IN -> Players in specific teams</option>
+                        <option value="-- LIKE<br>SELECT first_name, last_name FROM players WHERE last_name LIKE 'S%';">LIKE -> Search for last names starting with 'S'</option>
+                        <option value="-- IS NULL<br>SELECT first_name, last_name FROM players WHERE height_feet IS NULL;">IS NULL -> Check for null values</option>
+                        <option value="-- UNION<br>SELECT city FROM teams UNION SELECT city FROM games;">UNION -> Combine cities from teams and games</option>
+                        <option value="-- CASE<br>SELECT first_name, last_name, CASE WHEN height_feet > 6 THEN 'Tall' ELSE 'Short' END AS height_category FROM players;">CASE -> Conditional logic</option>
+                        <option value="-- CREATE TABLE<br>CREATE TABLE new_table (id INTEGER, name TEXT);">CREATE TABLE -> Create a new table</option>
+                    </select>
+                </div>
+                <form action="/query" method="POST">
+                    <textarea id="query-text" name="query_text" rows="5" placeholder="Enter your query here...">{{ query }}</textarea>
+                    <button type="submit" name="execute" value="true">Execute</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h3>Output or Results</h3>
+                {% if error %}
+                    <div class="error">
+                        <p>Error: {{ error }}</p>
+                    </div>
+                {% elif result %}
+                    <table>
+                        <thead>
+                            <tr>
+                                {% for col in result.columns %}
+                                    <th>{{ col }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in result.rows %}
+                                <tr>
+                                    {% for cell in row %}
+                                        <td>{{ cell }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No results to display.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('syntax-dropdown').addEventListener('change', function() {
+            const queryText = this.value.replace(/<br>/g, "\n");
+            document.getElementById('query-text').value = queryText;
+        });
+    </script>
+</body>
+</html>
