@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Replace with your secret key for session management
 
 # Hard-coded OpenAI API key for debugging purposes
-api_key = 'YOUR_API_KEY'
+api_key = 'your_api_key'
 
 if not api_key:
     app.logger.error("OPENAI_API_KEY not found in environment variables")
